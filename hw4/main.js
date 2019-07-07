@@ -15,17 +15,21 @@ const notepad = {
   },
   findNoteById(id) {
     for (let i = 0; i < this.notes.length; i += 1) {
-      console.log(this.notes[i]);
-      if (this.notes[i].id === id) {
-        return this.notes[i];
-      } else return undefined;
+      //   if (this.notes[i].id === id) {
+      //     return this.notes[i];
+      //   } else return undefined;
+      // }
+
+      this.notes.find(id => this.notes[i].id === id)
+        ? this.notes[i]
+        : undefined;
+      /*
+       * Ищет заметку в массиве notes
+       *
+       * Принимает: идентификатор заметки
+       * Возвращает: заметку с совпавшим полем id или undefined если ничего не найдено
+       */
     }
-    /*
-     * Ищет заметку в массиве notes
-     *
-     * Принимает: идентификатор заметки
-     * Возвращает: заметку с совпавшим полем id или undefined если ничего не найдено
-     */
   },
   saveNote(note) {
     this.notes.push(note);
@@ -40,9 +44,11 @@ const notepad = {
   deleteNote(id) {
     for (let i = 0; i < this.notes.length; i += 1) {
       if (this.notes[i].id === id) {
-        delete this.notes[i];
+        // delete this.notes[i];
+        this.notes.splice(i, 1);
       }
     }
+
     /*
      * Удаляет заметку по идентификатору из массива notes
      *
@@ -51,7 +57,13 @@ const notepad = {
      */
   },
   updateNoteContent(id, ...theArgs) {
-    // {title = val} = {title:val}
+    //   updateNoteContent(id, upNote) {
+    //     const current = this.findNoteById(id);
+    //     if (current) {
+    //       Object.assign(current, upNote);
+    //     }
+    //   },
+
     for (let i = 0; i < this.notes.length; i += 1) {
       if (this.notes[i].id === id) {
         for (const key in this.notes[i]) {
@@ -79,62 +91,73 @@ const notepad = {
   },
   updateNotePriority(id, newPriority) {
     for (let i = 0; i < this.notes.length; i += 1) {
-      if (this.notes[i].id === id) {
-        this.notes[i].priority = newPriority;
-        return this.notes[i];
-      }
-    }
-    /*
-     * Обновляет приоритет заметки
-     *
-     * Принимает: идентификатор заметки и ее новый приоритет
-     * Возвращает: обновленную заметку
-     */
-  },
-  filterNotesByQuery(query) {
-    for (let i = 0; i < this.notes.length; i += 1) {
-      if (
-        this.notes[i].title
-          .toLowerCase()
-          .split(" ")
-          .includes(query) ||
-        this.notes[i].body
-          .toLowerCase()
-          .split(" ")
-          .includes(query)
-      ) {
-        return this.notes[i];
-      }
-      // let toLowerTitle = this.notes[i].title.toLowerCase();
-      // let toLowerBody = this.notes[i].body.toLowerCase();
-      // let generalNotes = this.notes;
-      // let newArray = [];
-      // let toLowerTitleSplit = toLowerTitle.split(" ");
-      // let toLowerBodySplit = toLowerBody.split(" ");
-      // const newArray = this.notes.filter(function() {
-      //   for (let i = 0; i < toLowerTitleSplit.length; i += 1){
-      //     if (toLowerTitleSplit[i] == input || toLowerBodySplit[i] == input) {
-      //        newArray.push(toLowerTitleSplit[i]);
-      //        newArray.push(toLowerBodySplit[i]);
-      //        console.log(newArray);
-      //     }
-      //   }
-
-      //  console.log(toLowerTitle.indexOf(query) > -1);
-      //  return (toLowerTitle.indexOf(query) > -1 || toLowerBody.indexOf(query) > -1);
-      //   return (toLowerTitle == query || toLowerBody == query);
-      //    return (this.notes[i].body.toLowerCase() === query || this.notes[i].title.toLowerCase() === query);
+      //   if (this.notes[i].id === id) {
+      //     this.notes[i].priority = newPriority;
+      //     return this.notes[i];
       //   }
       // }
-      //  });
+      this.findNoteById(id);
+      this.notes[i].priority = newPriority;
+      return this.notes[i];
       /*
-       * Фильтрует массив заметок по подстроке query.
-       * Если значение query есть в заголовке или теле заметки - она подходит
+       * Обновляет приоритет заметки
        *
-       * Принимает: подстроку для поиска в title и body заметки
-       * Возвращает: новый массив заметок, контент которых содержит подстроку
+       * Принимает: идентификатор заметки и ее новый приоритет
+       * Возвращает: обновленную заметку
        */
     }
+  },
+  filterNotesByQuery(query) {
+    // for (let i = 0; i < this.notes.length; i += 1) {
+    //   let newArray = [];
+    //   if (
+    //     this.notes[i].title
+    //       .toLowerCase()
+    //      // .split(" ")
+    //       .includes(query) ||
+    //     this.notes[i].body
+    //       .toLowerCase()
+    //       //.split(" ")
+    //       .includes(query)
+    //   ) {
+    //     newArray.push(this.notes[i]);
+    //     return newArray;
+    //   }
+    return this.notes.filter(
+      e =>
+        e.title.toLowerCase().includes(query.toLowerCase()) ||
+        e.body.toLowerCase().includes(query.toLowerCase())
+    );
+    // let toLowerTitle = this.notes[i].title.toLowerCase();
+    // let toLowerBody = this.notes[i].body.toLowerCase();
+    // let generalNotes = this.notes;
+    // let newArray = [];
+    // let toLowerTitleSplit = toLowerTitle.split(" ");
+    // let toLowerBodySplit = toLowerBody.split(" ");
+    // const newArray = this.notes.filter(function() {
+    //   for (let i = 0; i < toLowerTitleSplit.length; i += 1){
+    //     if (toLowerTitleSplit[i] == input || toLowerBodySplit[i] == input) {
+    //        newArray.push(toLowerTitleSplit[i]);
+    //        newArray.push(toLowerBodySplit[i]);
+    //        console.log(newArray);
+    //     }
+    //   }
+
+    //  console.log(toLowerTitle.indexOf(query) > -1);
+    //  return (toLowerTitle.indexOf(query) > -1 || toLowerBody.indexOf(query) > -1);
+    //   return (toLowerTitle == query || toLowerBody == query);
+    //    return (this.notes[i].body.toLowerCase() === query || this.notes[i].title.toLowerCase() === query);
+    //   }
+    // }
+    //  });
+    /*
+     * Фильтрует массив заметок по подстроке query.
+     * Если значение query есть в заголовке или теле заметки - она подходит
+     *
+     * Принимает: подстроку для поиска в title и body заметки
+     * Возвращает: новый массив заметок, контент которых содержит подстроку
+     */
+    //  }
   },
   filterNotesByPriority(priority) {
     let newArray = [];
