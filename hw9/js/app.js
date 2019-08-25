@@ -235,6 +235,7 @@ const handleEditorSubmit = event => {
   event.preventDefault();
   event.currentTarget.reset();
   if (titleValue.trim() === "" || bodyValue.trim() === "") {
+    event.preventDefault();
     return alert("Необходимо заполнить все поля!");
   } else {
     return addListItem(titleValue, bodyValue);
@@ -245,8 +246,10 @@ const removeListItem = ({ target }) => {
   const action = target.closest("button").dataset.action;
   const parentListItemID = target.closest(".note-list__item").dataset.id;
   const parentListItem = target.closest(".note-list__item");
+  if (action === NOTE_ACTIONS.DELETE){
   notepad.deleteNote(parentListItemID);
   parentListItem.remove();
+  };
 };
 
 const filterNotes = ({ target }) => {
