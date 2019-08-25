@@ -233,11 +233,11 @@ const handleEditorSubmit = event => {
   const titleValue = title.value;
   const bodyValue = body.value;
   event.preventDefault();
-  event.currentTarget.reset();
   if (titleValue.trim() === "" || bodyValue.trim() === "") {
     event.preventDefault();
     return alert("Необходимо заполнить все поля!");
   } else {
+    event.currentTarget.reset();
     return addListItem(titleValue, bodyValue);
   }
 };
