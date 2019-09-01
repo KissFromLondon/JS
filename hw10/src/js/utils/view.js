@@ -150,4 +150,4 @@ refs.editor.addEventListener("submit", handleEditorSubmit);
 refs.list.addEventListener("click", removeListItem);
 refs.search.addEventListener("keyup", filterNotes);
 //refs.list.addEventListener('click', handleListClick);
-renderNoteList(refs.list, initialNotes);
+renderNoteList(refs.list, notepad.notes);
